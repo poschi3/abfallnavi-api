@@ -4,6 +4,10 @@ servers:
     description: Nürnberg
   - url: "https://aachen-abfallapp.regioit.de/abfall-app-aachen/rest"
     description: Aachen
+  - url: "https://zew2-abfallapp.regioit.de/abfall-app-zew2/rest/standorte/orte"
+    description: Aachen und Umgebung
+  - url: "https://krwaf-abfallapp.regioit.de/abfall-app-krwaf/rest"
+    description: Kreis Warendorf 
 info:
   title: Abfallnavi API
   version: "1.0.0"
