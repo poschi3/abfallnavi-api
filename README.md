@@ -6,10 +6,24 @@ Die Firma [regio iT](https://www.regioit.de) bietet für diverse Komunen die Sof
 
 ## Bekannte Komunen:
 
-* [Nürnberg](https://www.nuernberg.de/internet/abfallwirtschaft/abfallkalender_app.html)
 * [Aachen](https://serviceportal.aachen.de/abfallnavi)
-* [Aachen und Umgebung](https://abfallkalender.regioit.de/abfall-webapp-awa/)
+* [AWA Entsorgungs GmbH](https://abfallkalender.regioit.de/abfall-webapp-awa/)
+* Bergisch Gladbach
+* Bergischer Abfallwirtschaftverbund
+* Dinslaken
+* Dorsten
+* Gütersloh
+* Halver
+* Kreis Coesfeld
+* Kreis Heinsberg
+* Kreis Pinneberg
 * [Kreis Warendorf](https://abfallnavi.de/krgt/)
+* Lindlar
+* Lüdenscheid
+* Norderstedt
+* [Nürnberg](https://www.nuernberg.de/internet/abfallwirtschaft/abfallkalender_app.html)
+* Roetgen
+* EGW Westmünsterland
 
-Weitere potentille Gemeinden:
+Weitere potentielle Kommunen:
 * https://ozg.kdn.de/loesungen/details/abfallnawi

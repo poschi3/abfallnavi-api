@@ -1,20 +1,59 @@
 openapi: 3.0.0
 servers:
-  - url: "https://nuernberg-abfallapp.regioit.de/abfall-app-nuernberg/rest"
-    description: Nürnberg
-  - url: "https://aachen-abfallapp.regioit.de/abfall-app-aachen/rest"
-    description: Aachen
-  - url: "https://zew2-abfallapp.regioit.de/abfall-app-zew2/rest/standorte/orte"
-    description: Aachen und Umgebung
-  - url: "https://krwaf-abfallapp.regioit.de/abfall-app-krwaf/rest"
-    description: Kreis Warendorf 
+  - url: "https://{region}-abfallapp.regioit.de/abfall-app-{region}/rest"
+    variables:
+      region:
+        enum:
+          - "aachen" # Aachen
+          - "zew2" # AWA Entsorgungs GmbH
+          - "aw-bgl2" # Bergisch Gladbach
+          - "bav" # Bergischer Abfallwirtschaftverbund
+          - "din" # Dinslaken
+          - "dorsten" # Dorsten
+          - "gt2" # Gütersloh
+          - "hlv" # Halver
+          - "coe" # Kreis Coesfeld
+          - "krhs" # Kreis Heinsberg
+          - "pi" # Kreis Pinneberg
+          - "krwaf" # Kreis Warendorf
+          - "lindlar" # Lindlar
+          - "stl" # Lüdenscheid
+          - "nds" # Norderstedt
+          - "nuernberg" # Nürnberg
+          - "roe" # Roetgen
+          - "wml2" # EGW Westmünsterland
+        default: "nuernberg"
+        description: Region
 info:
   title: Abfallnavi API
   version: "1.0.0"
   description: |
     Termine für Leerung des Abfalls nach Abfallart (Papier, Restmüll, ...). Beispielswerte sind für das Rathaus Nürnberg (Hauptmarkt 18, Nürnberg).
 
-    # Vorgehensweise
+    # Kommunen / Regionen
+    
+    Das System ist in diverse Regionen unterteilt. Zu einer `Region` gehören ein oder mehrere Kommunen.
+
+    * `aachen`: Aachen
+    * `zew2`: AWA Entsorgungs GmbH
+    * `aw-bgl2`: Bergisch Gladbach
+    * `bav`: Bergischer Abfallwirtschaftverbund
+    * `din`: Dinslaken
+    * `dorsten`: Dorsten
+    * `gt2`: Gütersloh
+    * `hlv`: Halver
+    * `coe`: Kreis Coesfeld
+    * `krhs`: Kreis Heinsberg
+    * `pi`: Kreis Pinneberg
+    * `krwaf`: Kreis Warendorf
+    * `lindlar`: Lindlar
+    * `stl`: Lüdenscheid
+    * `nds`: Norderstedt
+    * `nuernberg`: Nürnberg
+    * `roe`: Roetgen
+    * `wml2`: EGW Westmünsterland
+
+    # Benutzung
     1. Orte aus System holen
     2. Mit Ort die Straßen abfragen
     3. Mit Straße die Hausnummern abfragen
@@ -38,7 +77,7 @@ paths:
       tags:
         - "Abholpunkte"
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -238,7 +277,7 @@ components:
         hausNrList:
           type: array
           items:
-            $ref: '#/components/schemas/Hausnummer'
+            $ref: "#/components/schemas/Hausnummer"
         plz:
           type: object
           #example: null # TODO Scheint immer null zu sein
@@ -246,7 +285,7 @@ components:
           type: string
           example: default
         ort:
-          $ref: '#/components/schemas/Ort'
+          $ref: "#/components/schemas/Ort"
           
     Hausnummer:
       properties:
@@ -289,7 +328,7 @@ components:
         bezirk:
           type: array
           items:
-            $ref: '#/components/schemas/Bezirk'
+            $ref: "#/components/schemas/Bezirk"
         datum:
           type: string
           example: "2022-01-11"
