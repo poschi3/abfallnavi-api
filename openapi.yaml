@@ -11,20 +11,32 @@ servers:
 info:
   title: Abfallnavi API
   version: "1.0.0"
-  description: Termine für Leerung des Abfalls nach Abfallart. Beispielswerte sind für die Stadt Nürnberg.
-  contact:
-    email: TODO@TODO.todo
+  description: |
+    Termine für Leerung des Abfalls nach Abfallart (Papier, Restmüll, ...). Beispielswerte sind für die Stadt Nürnberg.
+
+    # Vorgehensweise
+    1. Orte aus System holen
+    2. Mit Ort die Straßen abfragen
+    3. Mit Straße die Hausnummern abfragen
+    4. Mit Haunummer die möglichen Fraktionen (Müllsorten) abfragen
+    5. Mit Hausnummer und Fraktionen alle Termine abrufen
+
+    Manchmal wird nicht nach Hausnummer unterschieden
+
 tags:
-  - name: default
+  - name: Abholpunkte
+    description: Orte, Straßen, Hausnummern
+  - name: Fraktionen
+    description: Papier, Restmüll, ...
   - name: Termine
 paths:
   /orte:
     get:
-      summary: Orte
-      description: Orte für die Daten zur Verfügung stehen
+      summary: Orte im System
+      description: Orte die von diesem API-Endpoint bedient werden
       operationId: orte
       tags:
-        - "default"
+        - "Abholpunkte"
       responses:
         '200':
           description: OK
@@ -38,34 +50,90 @@ paths:
   /orte/{ortId}/strassen:
     get:
       summary: Straßen im Ort
-      description: Straßen im Ort
+      description: |
+        Straßen im Ort.
+
+        **Warnung**: Die Antwort dieser Anfrage ist zu groß für Anzeige innerhalb der Webseite
       operationId: strassenProOrt
       tags:
-        - "default"
+        - "Abholpunkte"
       parameters:
         - in: path
           name: ortId
-          description: Id des Ortes der abgefragt werden soll
+          description: Id des Ortes
           required: true
           schema:
             type: integer
+          example: 4407686
+      responses:
+        "200":
+          description: |
+            OK
+
+            **Hinweis**: Nur in der ersten Straße ist `hausNrList` befüllt.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Strasse"
+
+  /strassen/{strassenId}:
+    get: 
+      summary: Hausnummern in Straße
+      description: Hausnummern in Straße
+      operationId: hausnummernProStrasse
+      tags:
+        - "Abholpunkte"
+      parameters:
+        - in: path
+          name: strassenId
+          description: Id der Straße
+          required: true
+          schema:
+            type: integer
+          example: 4423828
       responses:
         "200":
           description: OK
           content:
-            "*/*": # Als Antwort kommt applicaiton/json, aber man darf damit nicht anfragen...
+            application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Strasse" # Eigentlich leer
+                $ref: "#/components/schemas/Strasse"
 
   /fraktionen:
     get:
-      summary: Müllarten
-      description: Welche Müllarten es gibt (Papier, Restmüll, ...)
+      summary: Müllarten im System
+      description: Welche Müllarten es im System
       operationId: muellarten
       tags:
-        - "default"
+        - "Fraktionen"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Fraktion"
+
+
+  /hausnummern/{hausnummernId}/fraktionen:
+    get:
+      summary: Müllarten für Hausnummer
+      description: Welche Müllarten es gibt an einer Hausnummer
+      operationId: muellartenProHausnummer
+      tags:
+        - "Fraktionen"
+      parameters:
+        - in: path
+          name: hausnummernId
+          description: Id der Hausnummer
+          required: true
+          schema:
+            type: integer
+          example: 4423852
       responses:
         "200":
           description: OK
@@ -86,7 +154,7 @@ paths:
       parameters:
         - in: path
           name: strassenId
-          description: Strasse für Termine TODO wie läuft das mit der Hausnummer?!
+          description: Id der Strasse
           required: true
           schema:
             type: integer
@@ -111,15 +179,15 @@ paths:
 
   /hausnummern/{hausnummernId}/termine:
     get:
-      summary: Abholtermine für Hausnummer in Straße
-      description: Abholtermine für Hausnummer in Straße
+      summary: Abholtermine für Hausnummer
+      description: Abholtermine für Hausnummer
       operationId: termineProHaussnummer
       tags:
         - "Termine"
       parameters:
         - in: path
           name: hausnummernId
-          description: Hausnummer (die zu einer Straße gehört) für Termine TODO wie läuft das mit der Hausnummer?!
+          description: Id der Hausnummer
           required: true
           schema:
             type: integer
@@ -154,23 +222,6 @@ components:
         name:
           type: string
           example: Nürnberg
-    Fraktion:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-          example: 0
-        name:
-          type: string
-          example: Restabfall
-        iconNr:
-          type: integer
-          format: int64
-          example: 7
-        farbeRgb:
-          type: string
-          example: "555555"
     Strasse:
       type: object
       properties:
@@ -190,7 +241,7 @@ components:
             $ref: '#/components/schemas/Hausnummer'
         plz:
           type: object
-          #example: null # Immer leer gesehen
+          #example: null # TODO Scheint immer null zu sein
         ortsteilName:
           type: string
           example: default
@@ -208,10 +259,27 @@ components:
           example: "1"
         plz:
           type: string
-          example: "90425" #TODO
+          example: "90425"
         staticId:
           type: string
-          example: "TvxybmJlcmdkZWZhdWx0SGF1cHRtYXJrdA==" #TODO
+          example: "TvxybmJlcmdkZWZhdWx0SGF1cHRtYXJrdA=="
+    Fraktion:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 0
+        name:
+          type: string
+          example: Restabfall
+        iconNr:
+          type: integer
+          format: int64
+          example: 7
+        farbeRgb:
+          type: string
+          example: "555555"
     Abholung:
       properties:
         id:
@@ -225,7 +293,7 @@ components:
         datum:
           type: string
           example: "2022-01-05"
-          #format: date # Komisches Date
+          #format: date # TODO Datenformat klären
     Bezirk:
       properties:
         id:
@@ -237,7 +305,7 @@ components:
           example: B0
         gueltigAb:
           type: object
-          #example: null
+          #example: null # TOOD Scheint immer null zu sein
         fraktiionId:
           type: integer
           format: int64
