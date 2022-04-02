@@ -73,7 +73,7 @@ paths:
   /orte:
     get:
       summary: Orte im System
-      description: Orte die von diesem API-Endpoint bedient werden
+      description: Orte die von diesem API-Endpoint bedient werden. 
       operationId: orte
       tags:
         - "Abholpunkte"
@@ -91,7 +91,7 @@ paths:
     get:
       summary: Straßen im Ort
       description: |
-        Straßen im Ort.
+        Straßen im Ort. Siehe id unter Pfad `/orte` für die ortId.
 
         **Warnung**: Die Antwort dieser Anfrage ist zu groß für Anzeige innerhalb der Webseite
       operationId: strassenProOrt
@@ -121,7 +121,7 @@ paths:
   /strassen/{strassenId}:
     get: 
       summary: Hausnummern in Straße
-      description: Hausnummern in Straße
+      description: Hausnummern in Straße. Siehe id unter Pfad `/orte/{ortId}/strassen` für die strassenId.
       operationId: hausnummernProStrasse
       tags:
         - "Abholpunkte"
@@ -144,7 +144,7 @@ paths:
   /fraktionen:
     get:
       summary: Müllarten im System
-      description: Welche Müllarten es im System
+      description: Welche Müllarten es im System gibt (z.B. Restabfall, Bioabfall, Papiertonne, Gelbe Tonne, Papiertonne 1100)
       operationId: muellarten
       tags:
         - "Fraktionen"
@@ -161,7 +161,7 @@ paths:
   /hausnummern/{hausnummernId}/fraktionen:
     get:
       summary: Müllarten für Hausnummer
-      description: Welche Müllarten es gibt an einer Hausnummer
+      description: Welche Müllarten es an einer Hausnummer gibt. Siehe id unter Pfad `/strassen/{strassenId}` für die hausnummernId.
       operationId: muellartenProHausnummer
       tags:
         - "Fraktionen"
@@ -186,7 +186,7 @@ paths:
   /strassen/{strassenId}/termine:
     get:
       summary: Abholtermine für Straße
-      description: Abholtermine für Straße
+      description: Abholtermine für Straße. Siehe id unter Pfad `/orte/{ortId}/strassen` für die strassenId.
       operationId: termineProStrasse
       tags:
         - "Termine"
@@ -219,7 +219,7 @@ paths:
   /hausnummern/{hausnummernId}/termine:
     get:
       summary: Abholtermine für Hausnummer
-      description: Abholtermine für Hausnummer
+      description: Abholtermine für Hausnummer. Siehe id unter Pfad `/strassen/{strassenId}` für die hausnummernId.
       operationId: termineProHaussnummer
       tags:
         - "Termine"
@@ -417,7 +417,7 @@ components:
           example: "17"
         gueltigAb:
           type: object
-          #example: null # TOOD Scheint immer null zu sein
+          #example: null # TODO Scheint immer null zu sein
         fraktiionId:
           type: integer
           format: int64
