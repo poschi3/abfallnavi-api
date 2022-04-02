@@ -16,7 +16,11 @@ tags:
 paths:
   /orte:
     get:
-      summary: Orte für die Daten zur Verfügung gestellt werden können
+      summary: Orte
+      description: Orte für die Daten zur Verfügung stehen
+      operationId: orte
+      tags:
+        - "default"
       responses:
         '200':
           description: OK
@@ -30,6 +34,10 @@ paths:
   /orte/{ortId}/strassen:
     get:
       summary: Straßen im Ort
+      description: Straßen im Ort
+      operationId: strassenProOrt
+      tags:
+        - "default"
       parameters:
         - in: path
           name: ortId
@@ -49,7 +57,11 @@ paths:
 
   /fraktionen:
     get:
-      summary: Welche Müllarten es gibt (Papier, Restmüll, ...)
+      summary: Müllarten
+      description: Welche Müllarten es gibt (Papier, Restmüll, ...)
+      operationId: muellarten
+      tags:
+        - "default"
       responses:
         "200":
           description: OK
@@ -63,6 +75,8 @@ paths:
   /strassen/{strassenId}/termine:
     get:
       summary: Abholtermine für Straße
+      description: Abholtermine für Straße
+      operationId: termineProStrasse
       tags:
         - "Termine"
       parameters:
@@ -80,7 +94,7 @@ paths:
             type: array
             items:
               type: integer
-            example: ["0", "1"]
+            example: [1, 2]
       responses:
         "200":
           description: OK
@@ -93,7 +107,9 @@ paths:
 
   /hausnummern/{hausnummernId}/termine:
     get:
-      summary: Abholtermine für Straße
+      summary: Abholtermine für Hausnummer in Straße
+      description: Abholtermine für Hausnummer in Straße
+      operationId: termineProHaussnummer
       tags:
         - "Termine"
       parameters:
@@ -111,7 +127,7 @@ paths:
             type: array
             items:
               type: integer
-            example: ["0", "1"]
+            example: [1, 2]
             
       responses:
         "200":
@@ -150,7 +166,7 @@ components:
           example: 7
         farbeRgb:
           type: string
-          example: 555555
+          example: "555555"
     Strasse:
       type: object
       properties:
@@ -170,7 +186,7 @@ components:
             $ref: '#/components/schemas/Hausnummer'
         plz:
           type: object
-          example: null # Immer leer gesehen
+          #example: null # Immer leer gesehen
         ortsteilName:
           type: string
           example: default
@@ -185,13 +201,13 @@ components:
           example: 4407689
         nr:
           type: string
-          example: 1
+          example: "1"
         plz:
           type: string
-          example: 90425 #TODO
+          example: "90425" #TODO
         staticId:
           type: string
-          example: TvxybmJlcmdkZWZhdWx0SGF1cHRtYXJrdA== #TODO
+          example: "TvxybmJlcmdkZWZhdWx0SGF1cHRtYXJrdA==" #TODO
     Abholung:
       properties:
         id:
@@ -217,7 +233,7 @@ components:
           example: B0
         gueltigAb:
           type: object
-          example: null
+          #example: null
         fraktiionId:
           type: integer
           format: int64
