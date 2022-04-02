@@ -2,7 +2,7 @@ openapi: 3.0.0
 servers:
   - url: "https://{region}-abfallapp.regioit.de/abfall-app-{region}/rest"
     variables:
-      region:
+      region: # In sync halten mit Abfallkalender #/components/schemas/Region
         enum:
           - "aachen" # Aachen
           - "zew2" # AWA Entsorgungs GmbH
@@ -68,6 +68,7 @@ tags:
   - name: Fraktionen
     description: Papier, Restmüll, ...
   - name: Termine
+
 paths:
   /orte:
     get:
@@ -157,7 +158,6 @@ paths:
                 items:
                   $ref: "#/components/schemas/Fraktion"
 
-
   /hausnummern/{hausnummernId}/fraktionen:
     get:
       summary: Müllarten für Hausnummer
@@ -239,7 +239,6 @@ paths:
             items:
               type: integer
             example: [3, 4]
-            
       responses:
         "200":
           description: OK
@@ -249,6 +248,80 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Abholung"
+
+  /kalender-{region}/downloadfile.jsp:
+    servers:
+      - url: https://abfallkalender.regioit.de
+    get:
+      summary: Datenexport als PDF oder ICS
+      description: | 
+        Datenexport als PDF oder ICS
+
+        **Hinweis**: Aus der Webseite heraus kann diese Abfrage nicht ausgeführt werden, weil kein Access-Control-Allow-Origin Header gesetzt wird.
+      operationId: downloadAsFile
+      tags:
+        - "Termine"
+      parameters:
+        - in: path
+          name: region
+          description: Region
+          required: true
+          schema:
+            $ref: "#/components/schemas/Region"
+        - in: query
+          name: format
+          description: Datenformat
+          required: true
+          schema:
+            type: string
+            enum:
+              - pdf
+              - ics
+        - in: query
+          name: jahr
+          description: Jahr
+          required: true
+          schema:
+            type: integer
+            example: 2022
+        - in: query
+          name: ort
+          description: Ortsname
+          required: true
+          schema:
+            type: string
+            example: "Nürnberg"
+        - in: query
+          name: strasse
+          description: Id der Straße
+          required: true
+          schema:
+            type: integer
+            example: 4432667
+        - in: query
+          name: hnr
+          description: Id der Hausnummer
+          required: true
+          schema:
+            type: integer
+            example: 4432679
+        - in: query
+          name: fraktion
+          required: true
+          schema:
+            type: array
+            items:
+              type: integer
+            example: [3, 4]
+      responses:
+        "200":
+          description: OK
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: string
+
 components:
   schemas:
     Ort:
@@ -349,3 +422,25 @@ components:
           type: integer
           format: int64
           example: 3
+    Region:
+      type: string
+      enum:
+        - "aachen" # Aachen
+        - "zew2" # AWA Entsorgungs GmbH
+        - "aw-bgl2" # Bergisch Gladbach
+        - "bav" # Bergischer Abfallwirtschaftverbund
+        - "din" # Dinslaken
+        - "dorsten" # Dorsten
+        - "gt2" # Gütersloh
+        - "hlv" # Halver
+        - "coe" # Kreis Coesfeld
+        - "krhs" # Kreis Heinsberg
+        - "pi" # Kreis Pinneberg
+        - "krwaf" # Kreis Warendorf
+        - "lindlar" # Lindlar
+        - "stl" # Lüdenscheid
+        - "nds" # Norderstedt
+        - "nuernberg" # Nürnberg
+        - "roe" # Roetgen
+        - "wml2" # EGW Westmünsterland
+      default: "nuernberg"
