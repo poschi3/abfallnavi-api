@@ -1,0 +1,224 @@
+openapi: 3.0.0
+servers:
+  - url: "https://nuernberg-abfallapp.regioit.de/abfall-app-nuernberg/rest"
+    description: Nürnberg
+  - url: "https://aachen-abfallapp.regioit.de/abfall-app-aachen/rest"
+    description: Aachen
+info:
+  title: Abfallnavi API
+  version: "1.0.0"
+  description: Termine für Leerung des Abfalls nach Abfallart. Beispielswerte sind für die Stadt Nürnberg.
+  contact:
+    email: TODO@TODO.todo
+tags:
+  - name: default
+  - name: Termine
+paths:
+  /orte:
+    get:
+      summary: Orte für die Daten zur Verfügung gestellt werden können
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Ort"
+
+  /orte/{ortId}/strassen:
+    get:
+      summary: Straßen im Ort
+      parameters:
+        - in: path
+          name: ortId
+          description: Id des Ortes der abgefragt werden soll
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*": # Als Antwort kommt applicaiton/json, aber man darf damit nicht anfragen...
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Strasse" # Eigentlich leer
+
+  /fraktionen:
+    get:
+      summary: Welche Müllarten es gibt (Papier, Restmüll, ...)
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Fraktion"
+
+  /strassen/{strassenId}/termine:
+    get:
+      summary: Abholtermine für Straße
+      tags:
+        - "Termine"
+      parameters:
+        - in: path
+          name: strassenId
+          description: Strasse für Termine TODO wie läuft das mit der Hausnummer?!
+          required: true
+          schema:
+            type: integer
+          example: 4407688
+        - in: query
+          name: fraktion
+          required: true
+          schema:
+            type: array
+            items:
+              type: integer
+            example: ["0", "1"]
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Abholung"
+
+  /hausnummern/{hausnummernId}/termine:
+    get:
+      summary: Abholtermine für Straße
+      tags:
+        - "Termine"
+      parameters:
+        - in: path
+          name: hausnummernId
+          description: Hausnummer (die zu einer Straße gehört) für Termine TODO wie läuft das mit der Hausnummer?!
+          required: true
+          schema:
+            type: integer
+          example: 4423852
+        - in: query
+          name: fraktion
+          required: true
+          schema:
+            type: array
+            items:
+              type: integer
+            example: ["0", "1"]
+            
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Abholung"
+components:
+  schemas:
+    Ort:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 4407686
+        name:
+          type: string
+          example: Nürnberg
+    Fraktion:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 0
+        name:
+          type: string
+          example: Restabfall
+        iconNr:
+          type: integer
+          format: int64
+          example: 7
+        farbeRgb:
+          type: string
+          example: 555555
+    Strasse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 4432667
+        name:
+          type: string
+          example: Hauptmarkt
+        staticId:
+          type: string
+          example: TvxybmJlcmdkZWZhdWx0SGF1cHRtYXJrdA==
+        hausNrList:
+          type: array
+          items:
+            $ref: '#/components/schemas/Hausnummer'
+        plz:
+          type: object
+          example: null # Immer leer gesehen
+        ortsteilName:
+          type: string
+          example: default
+        ort:
+          $ref: '#/components/schemas/Ort'
+          
+    Hausnummer:
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 4407689
+        nr:
+          type: string
+          example: 1
+        plz:
+          type: string
+          example: 90425 #TODO
+        staticId:
+          type: string
+          example: TvxybmJlcmdkZWZhdWx0SGF1cHRtYXJrdA== #TODO
+    Abholung:
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 4478944
+        bezirk:
+          type: array
+          items:
+            $ref: '#/components/schemas/Bezirk'
+        datum:
+          type: string
+          example: "2022-01-05"
+          #format: date # Komisches Date
+    Bezirk:
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 4407690
+        name:
+          type: string
+          example: B0
+        gueltigAb:
+          type: object
+          example: null
+        fraktiionId:
+          type: integer
+          format: int64
+          example: 0
