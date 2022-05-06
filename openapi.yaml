@@ -21,6 +21,7 @@ servers:
           - "nds" # Norderstedt
           - "nuernberg" # Nürnberg
           - "roe" # Roetgen
+          - "solingen" # Solingen
           - "wml2" # EGW Westmünsterland
         default: "nuernberg"
         description: Region
@@ -51,6 +52,7 @@ info:
     * `nds`: Norderstedt
     * `nuernberg`: Nürnberg
     * `roe`: Roetgen
+    * `solingen`: Solingen
     * `wml2`: EGW Westmünsterland
 
     # Benutzung
