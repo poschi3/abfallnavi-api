@@ -56,6 +56,9 @@ info:
     * `wml2`: EGW Westmünsterland
 
     # Benutzung
+
+    Für die Abfrage von Terminen ist eine Reihe von IDs (von Orten, Straßen und/oder Hausnummern) in Erfahrung zu bringen. Vorsicht:IDs können sich mit der Zeit ändern
+
     1. Orte aus System holen
     2. Mit Ort die Straßen abfragen
     3. Mit Straße die Hausnummern abfragen
