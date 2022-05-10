@@ -44,5 +44,12 @@ Für die Abfrage von Terminen ist eine Reihe von IDs (von Orten, Straßen und/od
     
 ## Beispiel
 ```bash
-result=$(curl -m 60 https://nuernberg-abfallapp.regioit.de/abfall-app-nuernberg/rest/strassen/4641961/termine)
+ortId=$(curl -s https://nuernberg-abfallapp.regioit.de/abfall-app-nuernberg/rest/orte | jq '.[0].id');
+strassenId=$(curl -s https://nuernberg-abfallapp.regioit.de/abfall-app-nuernberg/rest/orte/$ortId/strassen | jq '.[] | select(.name == "Aachener Strasse").id');
+hausnummernId=$(curl -s https://nuernberg-abfallapp.regioit.de/abfall-app-nuernberg/rest/orte/$ortId/strassen/$strassenId | jq '.[] | select(.name=="Aachener Strasse").hausNrList | .[] | select(.nr=="1").id');
+fraktionsId=$(curl -s https://nuernberg-abfallapp.regioit.de/abfall-app-nuernberg/rest/fraktionen | jq '.[] | select(.name=="Restabfall").id');
+fraktionsId2=$(curl -s https://nuernberg-abfallapp.regioit.de/abfall-app-nuernberg/rest/hausnummern/$hausnummernId/fraktionen | jq '.[] | select(.name=="Restabfall").id');
+fraktionsId3=$(curl -s https://nuernberg-abfallapp.regioit.de/abfall-app-nuernberg/rest/strassen/$strassenId/fraktionen);
+termine=$(curl -s https://nuernberg-abfallapp.regioit.de/abfall-app-nuernberg/rest/strassen/$strassenId/termine);
+termine2=$(curl -s https://nuernberg-abfallapp.regioit.de/abfall-app-nuernberg/rest/hausnummern/$hausnummernId/termine);
 ```
