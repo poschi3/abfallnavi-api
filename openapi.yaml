@@ -91,6 +91,31 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Ort"
+                  
+  /orte/{ortId}:
+    get:
+      summary: Informationen zu Ort
+      description: Informationen zu einem Ort
+      operationId: ort
+      tags:
+        - "Abholpunkte"
+      parameters:
+        - in: path
+          name: ortId
+          description: Id des Ortes
+          required: true
+          schema:
+            type: integer
+          example: 4407686        
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Ort2"
 
   /orte/{ortId}/strassen:
     get:
@@ -188,6 +213,31 @@ paths:
                 items:
                   $ref: "#/components/schemas/Fraktion"
 
+  /strassen/{strassenId}/fraktionen:
+    get:
+      summary: Müllarten für Straßen
+      description: Welche Müllarten es in einer Straße gibt. Siehe id unter Pfad `/orte/{ortId}/strassen` für die strassenId.
+      operationId: muellartenProStrasse
+      tags:
+        - "Fraktionen"
+      parameters:
+        - in: path
+          name: strassenId
+          description: Id der Straße
+          required: true
+          schema:
+            type: integer
+          example: 4432679
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Fraktion"
+                  
   /strassen/{strassenId}/termine:
     get:
       summary: Abholtermine für Straße
@@ -330,6 +380,18 @@ paths:
 components:
   schemas:
     Ort:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: integer
+            format: int64
+            example: 4407686
+          name:
+            type: string
+            example: Nürnberg
+    Ort2:
       type: object
       properties:
         id:
@@ -338,7 +400,7 @@ components:
           example: 4407686
         name:
           type: string
-          example: Nürnberg
+          example: Nürnberg          
     Strasse:
       type: object
       properties:
