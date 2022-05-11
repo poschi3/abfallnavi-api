@@ -106,7 +106,6 @@ paths:
           required: true
           schema:
             type: integer
-          example: 4407686        
       responses:
         "200":
           description: OK
@@ -134,13 +133,12 @@ paths:
           required: true
           schema:
             type: integer
-          example: 4407686
       responses:
         "200":
           description: |
             OK
 
-            **Hinweis**: Nur in der ersten Straße ist `hausNrList` befüllt.
+            **Hinweis**: Nur für die erste Straße ist `hausNrList` befüllt.
           content:
             application/json:
               schema:
@@ -162,7 +160,6 @@ paths:
           required: true
           schema:
             type: integer
-          example: 4432667
       responses:
         "200":
           description: OK
@@ -202,7 +199,6 @@ paths:
           required: true
           schema:
             type: integer
-          example: 4432679
       responses:
         "200":
           description: OK
@@ -227,7 +223,6 @@ paths:
           required: true
           schema:
             type: integer
-          example: 4432679
       responses:
         "200":
           description: OK
@@ -252,7 +247,6 @@ paths:
           required: true
           schema:
             type: integer
-          example: 4432667
         - in: query
           name: fraktion
           required: true
@@ -285,7 +279,6 @@ paths:
           required: true
           schema:
             type: integer
-          example: 4432679
         - in: query
           name: fraktion
           required: true
@@ -352,14 +345,12 @@ paths:
           required: true
           schema:
             type: integer
-            example: 4432667
         - in: query
           name: hnr
           description: Id der Hausnummer
           required: true
           schema:
             type: integer
-            example: 4432679
         - in: query
           name: fraktion
           required: true
