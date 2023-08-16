@@ -5,7 +5,7 @@ Zugriff auf die Termine der Müllabfuhr.
 Die Firma [regio iT](https://www.regioit.de) bietet für diverse Kommunen die Software [abfallnavi](https://www.regioit.de/produkte-leistungen/sap-loesungen/entsorgung/abfallapp-abfallnavi) an.
 
 
-## Bekannte Komunen:
+## Bekannte Kommunen:
 
 * [Aachen](https://serviceportal.aachen.de/abfallnavi)
 * [AWA Entsorgungs GmbH](https://abfallkalender.regioit.de/abfall-webapp-awa/)
